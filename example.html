@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ractive-menu Example</title>
+    <link rel="stylesheet" type="text/css" href="build/build.css" />
+  </head>
+  <body>
+    <div id="container">
+      <fieldset>
+        <legend>Add a Tab</legend>
+        <label>Title</label><br/>
+        <input value="{{title}}" /><br/>
+        <label>Closable?</label><input type="checkbox" checked="{{closable}}" /><br/>
+        <label>Content</label><br/>
+        <textarea value="{{content}}"></textarea><br/>
+        <button on-click="add">Add Tab</button>
+      </fieldset>
+      <tabbox>
+        <div title="First Tab">This is the first tab.</div>
+        <div>Second, auto-named tab</div>
+        <div title="Closable" closable="true"><h1>Closable Tab</h1><p>I am closable</p></div>
+      </tabbox>
+    </div>
+    <script type="text/javascript" src="build/build.js"></script>
+    <script type="text/javascript">
+      var tab = require('ractive-tab-box');
+      Ractive.components.tabbox = tab;
+      var r = window.r = new Ractive({ el: 'container', template: '#container' });
+      r.on('add', function() {
+        r.findComponent('tabbox').appendTab({ title: r.get('title'), content: r.get('content'), closable: r.get('closable') });
+        r.set({ title: '', content: '', closable: false });
+      });
+    </script>
+  </body>
+</html>

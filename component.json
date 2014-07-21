@@ -1,0 +1,13 @@
+{
+  "name": "ractive-tab-box",
+  "repository": "evs-chris/ractive-tab-box",
+  "description": "A tab component for ractive.",
+  "version": "0.0.1",
+  "dependencies": {
+    "ractivejs/ractive": "*"
+  },
+  "scripts": ["index.js"],
+  "styles": ["index.css"],
+  "main": "index.js",
+  "license": "MIT"
+}
