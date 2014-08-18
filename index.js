@@ -12,7 +12,9 @@ function buildTabs(tabs) {
     } else {
       cnt = cnt || [];
     }
-    tpl.push({ t: 4, x: { r: ['.currentIndex'], s: '${0}===' + i }, f: cnt });
+    delete cnt[0].a.title;
+    cnt[0].a.style = [{ t: 4, x: { r: ['.currentIndex'], s: '${0}!==' + i }, f: ['display: none'] }];
+    tpl.push(cnt[0]);
   }
   return tpl;
 }
