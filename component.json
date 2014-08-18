@@ -2,7 +2,7 @@
   "name": "ractive-tab-box",
   "repository": "evs-chris/ractive-tab-box",
   "description": "A tab component for ractive.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "dependencies": {
     "ractivejs/ractive": "*"
   },

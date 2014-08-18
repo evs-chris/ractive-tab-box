@@ -1,4 +1,4 @@
-ractive-menu - A tab box component for ractive
+ractive-tab-box - A tab box component for ractive
 ================================================================
 
 component
