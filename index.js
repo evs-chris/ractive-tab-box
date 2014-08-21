@@ -19,19 +19,42 @@ function buildTabs(tabs) {
   return tpl;
 }
 
+function buildTitles(tabs) {
+  var tpl = [];
+  for (var i = 0; i < tabs.length; i++) {
+    var cnt = tabs[i].title;
+    if (typeof cnt === 'string') {
+      tabs[i].title = { t: Ractive.parse(cnt).t };
+      cnt = tabs[i].title.t;
+    } else if (!!cnt.t) {
+      cnt = cnt.t;
+    } else {
+      cnt = cnt || [];
+    }
+    var c = i;
+    tpl.push({"t":7,"e":"div","a":{"class":["rtb-header",{"t":4,"x":{"r":["currentIndex"],"s":"${0}===" + c},"f":[" selected"]}]},"v":{"click":{"n":"tabChanged","a":[c]}},"f":cnt.concat({"t":4,"r":"tabs." + c + ".closable","f":[" ",{"t":7,"e":"button","v":{"click":{"n":"closeTab","a":[c]}}}]})});
+  }
+  return tpl;
+}
+
 var TabBox = Ractive.extend({
-  template: '<div class="ractive-tab-box"><div class="rtb-headers">{{#.tabs:i}}<div class="rtb-header{{#(currentIndex === i)}} selected{{/}}" on-click="tabChanged:{{i}}">{{.title}}{{#.closable}}<button on-click="closeTab:{{i}}"></button>{{/}}</div>{{/}}</div><div class="rtb-contents">{{#rendered}}{{>tabs}}{{/}}</div></div>',
+  template: '<div class="ractive-tab-box">{{#rendered}}<div class="rtb-headers">{{>titles}}</div><div class="rtb-contents">{{>tabs}}</div>{{/}}</div>',
   beforeInit: function(opts) {
     opts.data.rendered = false;
   },
   init: function() {
     var me = this;
     var content = me.partials.content;
-    var tabs = [], count = 0;
+    var tabs = [], count = 0, tmp;
     for (var i = 0; i < content.length; i++) {
       if (typeof content[i] === 'string') continue;
       count++;
       var attrs = content[i].a || {};
+      if (typeof attrs.closable === 'string') {
+        tmp = attrs.closable.toLowerCase();
+        // yes or true
+        attrs.closable = tmp.indexOf('y') === 0 || tmp.indexOf('t') === 0;
+      }
       tabs.push({ title: (attrs.title || 'Tab ' + count), content: [content[i]], closable: attrs.closable === undefined ? false : attrs.closable });
     }
 
@@ -49,12 +72,16 @@ var TabBox = Ractive.extend({
       currentIndex: 0
     });
 
-    me.observe('tabs.*.content', function(old, val, path) {
+    var rerender = function(old, val, path) {
       me.set('rendered', false).then(function() {
+        me.partials.titles = buildTitles(me.get('tabs'));
         me.partials.tabs = buildTabs(me.get('tabs'));
         me.set('rendered', true);
       });
-    });
+    };
+
+    me.observe('tabs.*.content', rerender);
+    me.observe('tabs.*.title', rerender);
   },
   appendTab: function(title, content) {
     this.get('tabs').push(arguments.length === 1 ? title : { title: title, content: content });
