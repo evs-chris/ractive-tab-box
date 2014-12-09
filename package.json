@@ -1,0 +1,11 @@
+{
+  "name": "ractive-tab-box",
+  "private": true,
+  "devDependencies": {
+    "gobble": "^0",
+    "sander": "^0"
+  },
+  "scripts": {
+    "build": "./scripts/build.sh"
+  }
+}
