@@ -1,25 +1,25 @@
 /* global Ractive */
 
-// TODO: title, etc reset; functions for index/id adjustments; draggable tab arrangement
+// TODO: draggable tab arrangement
 
 var template = `<div class="ractive-tab-box">
   <div class="rtb-tabs">
-    {{#tabs}}
-      <div class="rtb-tab{{#current === .id}} selected{{/}}" on-click="changeTab(.id)">
-        {{>~/title(.id)}}{{#.closable}} <button on-click="closeTab(.id)" />{{/}}
+    {{#tabs:i}}
+      <div class="rtb-tab{{#current === i}} selected{{/}}" on-click="changeTab(i)">
+        {{>~/tab(i, 'title')}}{{#.closable}} <button on-click="closeTab(i)" />{{/}}
       </div>
     {{/}}
   </div>
   <div class="rtb-contents">
-    {{#tabs}}
-      <div style="{{#current !== .id}}display: none;{{/}}">{{>~/tab(.id)}}</div>
+    {{#tabs:i}}
+      <div style="{{#current !== i}}display: none;{{/}}">{{>~/tab(i)}}</div>
     {{/}}
   </div>
 </div>`;
 
 var TabBox = Ractive.extend({
   template: template,
-  onconstruct: function(opts) {
+  onconstruct(opts) {
     var tabs = opts.data.tabs = [];
 
     // read tabs from content
@@ -42,86 +42,75 @@ var TabBox = Ractive.extend({
     if (tabs.length > 0) opts.data.current = tabs[0].id;
   },
   data: {
+    // get the {content,title} of a tab
+    tab(index, part) {
+      if (part === undefined) part = 'content';
 
-    // get the title of a tab
-    title: function(id) {
-      var key = 'title-' + id;
+      var tab = this.get('tabs')[index];
+
+      if (!tab) return 'missing';
+
+      var key = part + '-' + tab.id;
       if (key in this.partials) return key;
-      
-      var {tab,index} = findTab(this.get('tabs'), id);
 
-      if (tab) {
-        this.partials[key] = tab.title || 'Tab ' + index;
-      } 
+      this.partials[key] = tab[part] || 'Tab ' + index;
 
       return key;
     },
-
-    // get the content of a tab
-    tab: function(id) {
-      var key = 'tab-' + id;
-      if (key in this.partials) return key;
-      
-      var {tab,index} = findTab(this.get('tabs'), id);
-
-      if (tab) {
-        this.partials[key] = tab.content;
-      } 
-
-      return key;
-    }
   },
 
-  // switch tabs by id
-  changeTab: function(id) {
-    return this.set('current', id);
+  partials: { 'missing': '' },
+
+  // switch tabs by index
+  changeTab(index) {
+    return this.set('current', index);
   },
 
-  // close tab by id
-  closeTab: function(id) {
-    var me = this, tabs = me.get('tabs'), {tab,index} = findTab(tabs, id);
+  // close tab by index
+  closeTab(index) {
+    var me = this, tab = me.get('tabs')[index];
 
-    if (index !== undefined) {
-      if ((typeof tab.onClose === 'function' && tab.onClose.call(this)) || typeof tab.onClose !== 'function') { 
+    if (tab !== undefined) {
+      var id = tab.id;
+      if ((typeof tab.onClose === 'function' && tab.onClose.call(this)) || typeof tab.onClose !== 'function') {
         delete this.partials['title-' + id];
-        delete this.partials['tab-' + id];
-        return me.splice('tabs', index, 1).then(function() {
-          return me.set('current', tabs[index > 0 ? index - 1 : 0].id);
-        });
+        delete this.partials['content-' + id];
+        return me.splice('tabs', index, 1).then(() => me.set('current', index > 0 ? index - 1 : 0));
       }
     }
   },
 
   // add a tab to the end
-  appendTab: function(options) {
+  appendTab(options) {
     this.insertTab(-1, options);
   },
 
   // add a tab at index
-  insertTab: function(index, options) {
+  insertTab(index, options) {
     var me = this, tabs = this.get('tabs');
     if (index < 0) index = tabs.length;
     options.id = getId();
-    return me.splice('tabs', index, 0, options).then(function() {
-      return me.set('current', options.id);
-    });
+    return me.splice('tabs', index, 0, options).then(() => me.set('current', index));
   },
 
   // reset tab content
-  resetTab: function(index, content) {
-    var me = this, tabs = me.get('tabs'), tab = tabs[index];
+  resetTab(index, content) {
+    var tab = this.get('tabs')[index];
 
     if (tab) {
-      return me.resetPartial('tab-' + tab.id, content);
+      return me.resetPartial('content-' + tab.id, content);
+    }
+  },
+
+  // reset tab title
+  resetTitle(index, title) {
+    var tab = this.get('tabs')[index];
+
+    if (tab) {
+      return me.resetPartial('title-' + tab.id, title);
     }
   }
 });
-
-function findTab(tabs, id) {
-  for (var i = 0; i < tabs.length; i++) {
-    if (tabs[i].id === id) return { tab: tabs[i], index: i };
-  }
-}
 
 // module level tab ids
 var getId = (function() {
@@ -130,3 +119,5 @@ var getId = (function() {
     return i++;
   };
 })();
+
+export default TabBox;

@@ -14,22 +14,22 @@
         <textarea value="{{content}}"></textarea><br/>
         <button on-click="add">Add Tab</button>
       </fieldset>
-      <tabbox>
+      <TabBox>
         <Tab title="First Tab">This is the first tab.</Tab>
         <Tab>Second, auto-named tab</Tab>
         <Tab title="Closable" closable="true"><h1>Closable Tab</h1><p>I am closable</p></Tab>
-      </tabbox>
+      </TabBox>
     </script>
   </head>
   <body>
-    <div id="container"> </div>
+    <div id="container"></div>
     <script type="text/javascript" src="/lib/ractive/index.js"></script>
     <script type="text/javascript" src="/ractive-tab-box.js"></script>
     <script type="text/javascript">
-      Ractive.components.tabbox = RactiveTabBox.default;
+      Ractive.components.TabBox = RactiveTabBox.default;
       var r = window.r = new Ractive({ el: 'container', template: '#template' });
       r.on('add', function() {
-        r.findComponent('tabbox').appendTab({ title: r.get('title'), content: r.get('content'), closable: r.get('closable') });
+        r.findComponent('TabBox').appendTab({ title: r.get('title'), content: r.get('content'), closable: r.get('closable') });
         r.set({ title: '', content: '', closable: false });
       });
     </script>
