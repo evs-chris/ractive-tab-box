@@ -1,0 +1,63 @@
+.ractive-tab-box {
+  margin: 0.5em;
+}
+
+.ractive-tab-box > .rtb-tabs > .rtb-tab {
+  float: left;
+  margin: 0em 0.3em;
+  background-color: rgba(128, 128, 128, 0.15);
+  border-top: 1px solid #999;
+  border-right: 1px solid #999;
+  border-left: 1px solid #999;
+  padding: 0.25em;
+  border-radius: 0.25em 0.25em 0px 0px;
+  font-family: sans-serif;
+  cursor: pointer;
+  height: 1.2em;
+}
+
+.ractive-tab-box > .rtb-tabs > .rtb-tab.selected {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+}
+
+.ractive-tab-box > .rtb-tabs::after {
+  content: ' ';
+  clear: left;
+  display: block;
+}
+
+.ractive-tab-box > .rtb-tabs {
+  border-bottom: 1px solid #999;
+}
+
+.ractive-tab-box > .rtb-contents {
+  padding: 0.5em;
+}
+
+.rtb-tab > button {
+  margin: 0 0 0 0.6em;
+  border-radius: 0.75em;
+  border: 1px solid #999;
+  width: 1.5em;
+  height: 1.5em;
+  font-weight: bold;
+  color: #777;
+  font-size: 0.7em;
+  background-color: rgba(128, 128, 128, 0.15);
+  padding: 0 0 0.1em 0.1em;
+  text-align: center;
+  position: relative;
+  top: -0.1em;
+}
+
+.rtb-tab > button::after {
+  content: 'x';
+}
+
+.rtb-tab > button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #333;
+  border-color: #333;
+}
