@@ -1,3 +1,7 @@
+## 0.4.1
+
+* __BUG:__ Now starts with the first tab selected correctly.
+
 ## 0.4.0
 
 * Switches component methods to work with indices instead of ids.
