@@ -38,8 +38,8 @@ var TabBox = Ractive.extend({
       }
     }
 
-    // set initial tab, if provided
-    if (tabs.length > 0) opts.data.current = tabs[0].id;
+    // set current to the first tab
+    opts.data.current = 0;
   },
   data: {
     // get the {content,title} of a tab
