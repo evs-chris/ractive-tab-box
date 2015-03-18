@@ -4,7 +4,7 @@ A Tab Box component built on [Ractive](https://github.com/ractivejs/ractive)
 
 ## Where to get it?
 
-Racive Tab Box is available as a [giblet](https://github.com/evs-chris/gobble-giblet), a [component](https://github.com/componentjs/component), and a pre-assembled UMD module. Each flavor does not declare an explicit dependency on Ractive, but it is expected to be available as a global.
+Racive Tab Box is available as a [giblet](https://github.com/evs-chris/gobble-giblets), a [component](https://github.com/componentjs/component), and a pre-assembled UMD module. Each flavor does not declare an explicit dependency on Ractive, but it is expected to be available as a global.
 
 All of the pre-built files live in tags on the build branch.
 
