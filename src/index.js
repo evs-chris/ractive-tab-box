@@ -12,7 +12,7 @@ var template = `<div class="ractive-tab-box">
   </div>
   <div class="rtb-contents">
     {{#tabs:i}}
-      <div style="{{#current !== i}}display: none;{{/}}">{{>~/tab(i)}}</div>
+      <div style="{{#current !== i}}position: absolute; left: -10000px; top: 0px; height: 100%;{{/}}">{{>~/tab(i)}}</div>
     {{/}}
   </div>
 </div>`;
