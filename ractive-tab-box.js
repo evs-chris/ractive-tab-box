@@ -24,7 +24,7 @@
   
   // TODO: draggable tab arrangement
   
-  var index__template = "<div class=\"ractive-tab-box\">\n  <div class=\"rtb-tabs\">\n    {{#tabs:i}}\n      <div class=\"rtb-tab{{#current === i}} selected{{/}}\" on-click=\"changeTab(i)\">\n        {{>~/tab(i, 'title')}}{{#.closable}} <button on-click=\"closeTab(i)\" />{{/}}\n      </div>\n    {{/}}\n  </div>\n  <div class=\"rtb-contents\">\n    {{#tabs:i}}\n      <div style=\"{{#current !== i}}display: none;{{/}}\">{{>~/tab(i)}}</div>\n    {{/}}\n  </div>\n</div>";
+  var index__template = "<div class=\"ractive-tab-box\">\n  <div class=\"rtb-tabs\">\n    {{#tabs:i}}\n      <div class=\"rtb-tab{{#current === i}} selected{{/}}\" on-click=\"changeTab(i)\">\n        {{>~/tab(i, 'title')}}{{#.closable}} <button on-click=\"closeTab(i)\" />{{/}}\n      </div>\n    {{/}}\n  </div>\n  <div class=\"rtb-contents\">\n    {{#tabs:i}}\n      <div style=\"{{#current !== i}}position: absolute; left: -10000px; top: 0px; height: 100%;{{/}}\">{{>~/tab(i)}}</div>\n    {{/}}\n  </div>\n</div>";
   
   var index__TabBox = Ractive.extend({
     template: index__template,
