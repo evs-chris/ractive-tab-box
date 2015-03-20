@@ -1,3 +1,7 @@
+## 0.4.3
+
+* __BUG?:__ Tab contents shuffled off the top of the viewport too, because `pre` tags seem to prefer it that way.
+
 ## 0.4.2
 
 * __BUG?:__ Tab contents are now left rendered and shuffled out of the viewport, so some touchier components don't freak out when hidden.
