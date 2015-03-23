@@ -12,7 +12,7 @@ var template = `<div class="ractive-tab-box">
   </div>
   <div class="rtb-contents">
     {{#tabs:i}}
-      <div style="{{#current !== i}}position: absolute; left: -10000px; top: -10000px; height: 100%;{{/}}">{{>~/tab(i)}}</div>
+      <div style="{{#current !== i}}position: absolute; left: -10000px; top: -10000px; height: 100%;{{/}}" {{#.class}}class="{{.class}}"{{/}}>{{>~/tab(i)}}</div>
     {{/}}
   </div>
 </div>`;
@@ -28,12 +28,14 @@ var TabBox = Ractive.extend({
       for (var i = 0; i < content.length && (c = content[i]); i++) {
         if (c.e === 'Tab') {
           c.a = c.a || {};
-          tabs.push({
-            title: c.a.title,
-            closable: !!c.a.closable && !!c.a.closable.toString().match(/^t/i),
-            content: c.f,
-            id: getId()
-          });
+          let tab = {};
+
+          for (let k in c.a) tab[k] = c.a[k];
+
+          tab.closable = !!c.a.closable && !!c.a.closable.toString().match(/^t/i);
+          tab.content = c.f;
+          tab.id = getId();
+          tabs.push(tab);
         }
       }
     }
