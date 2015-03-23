@@ -1,3 +1,7 @@
+## 0.5.0
+
+* Adds support for additional attributes on tabs, specifically, class is now passed along to the tab's `div` wrapper in the provided template.
+
 ## 0.4.3
 
 * __BUG?:__ Tab contents shuffled off the top of the viewport too, because `pre` tags seem to prefer it that way.
