@@ -24,7 +24,7 @@
   
   // TODO: draggable tab arrangement
   
-  var index__template = "<div class=\"ractive-tab-box\">\n  <div class=\"rtb-tabs\">\n    {{#tabs:i}}\n      <div class=\"rtb-tab{{#current === i}} selected{{/}}\" on-click=\"changeTab(i)\">\n        {{>~/tab(i, 'title')}}{{#.closable}} <button on-click=\"closeTab(i)\" />{{/}}\n      </div>\n    {{/}}\n  </div>\n  <div class=\"rtb-contents\">\n    {{#tabs:i}}\n      <div style=\"{{#current !== i}}position: absolute; left: -10000px; top: -10000px; height: 100%;{{/}}\">{{>~/tab(i)}}</div>\n    {{/}}\n  </div>\n</div>";
+  var index__template = "<div class=\"ractive-tab-box\">\n  <div class=\"rtb-tabs\">\n    {{#tabs:i}}\n      <div class=\"rtb-tab{{#current === i}} selected{{/}}\" on-click=\"changeTab(i)\">\n        {{>~/tab(i, 'title')}}{{#.closable}} <button on-click=\"closeTab(i)\" />{{/}}\n      </div>\n    {{/}}\n  </div>\n  <div class=\"rtb-contents\">\n    {{#tabs:i}}\n      <div style=\"{{#current !== i}}position: absolute; left: -10000px; top: -10000px; height: 100%;{{/}}\" {{#.class}}class=\"{{.class}}\"{{/}}>{{>~/tab(i)}}</div>\n    {{/}}\n  </div>\n</div>";
   
   var index__TabBox = Ractive.extend({
     template: index__template,
@@ -37,12 +37,14 @@
         for (var i = 0; i < content.length && (c = content[i]); i++) {
           if (c.e === "Tab") {
             c.a = c.a || {};
-            tabs.push({
-              title: c.a.title,
-              closable: !!c.a.closable && !!c.a.closable.toString().match(/^t/i),
-              content: c.f,
-              id: index__getId()
-            });
+            var tab = {};
+  
+            for (var k in c.a) {
+              tab[k] = c.a[k];
+            }tab.closable = !!c.a.closable && !!c.a.closable.toString().match(/^t/i);
+            tab.content = c.f;
+            tab.id = index__getId();
+            tabs.push(tab);
           }
         }
       }
