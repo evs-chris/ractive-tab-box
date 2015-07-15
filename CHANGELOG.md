@@ -1,3 +1,9 @@
+## 0.6.0
+
+* Slightly less tabbed style
+* Support for dynamic full-width up to 10 tabs.
+* Update to handle Ractive deprecations.
+
 ## 0.5.0
 
 * Adds support for additional attributes on tabs, specifically, class is now passed along to the tab's `div` wrapper in the provided template.
