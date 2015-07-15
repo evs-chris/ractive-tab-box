@@ -13,8 +13,9 @@
         <label>Content</label><br/>
         <textarea value="{{content}}"></textarea><br/>
         <button on-click="add">Add Tab</button>
+        <input type="checkbox" checked="{{.fill}}" /> Fill width?
       </fieldset>
-      <TabBox>
+      <TabBox fillWidth="{{.fill}}">
         <Tab title="First Tab">This is the first tab.</Tab>
         <Tab>Second, auto-named tab</Tab>
         <Tab title="Closable" closable="true"><h1>Closable Tab</h1><p>I am closable</p></Tab>

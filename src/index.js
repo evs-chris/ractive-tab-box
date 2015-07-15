@@ -3,10 +3,10 @@
 // TODO: draggable tab arrangement
 
 var template = `<div class="ractive-tab-box">
-  <div class="rtb-tabs">
+  <div class="rtb-tabs{{#if ~/fillWidth}} fill-width{{/if}}">
     {{#tabs:i}}
       <div class="rtb-tab{{#current === i}} selected{{/}}" on-click="changeTab(i)">
-        {{>~/tab(i, 'title')}}{{#.closable}} <button on-click="closeTab(i)" />{{/}}
+        <div>{{>~/tab(i, 'title')}}</div>{{#.closable}} <button on-click="closeTab(i)" />{{/}}
       </div>
     {{/}}
   </div>
@@ -16,6 +16,22 @@ var template = `<div class="ractive-tab-box">
     {{/}}
   </div>
 </div>`;
+
+// get the {content,title} of a tab
+function tab(index, part) {
+  if (part === undefined) part = 'content';
+
+  let tb = this.get('tabs')[index];
+
+  if (!tb) return 'missing';
+
+  var key = part + '-' + tb.id;
+  if (key in this.partials) return key;
+
+  this.partials[key] = tb[part] || 'Tab ' + index;
+
+  return key;
+}
 
 var TabBox = Ractive.extend({
   template: template,
@@ -43,22 +59,10 @@ var TabBox = Ractive.extend({
     // set current to the first tab
     opts.data.current = 0;
   },
-  data: {
-    // get the {content,title} of a tab
-    tab(index, part) {
-      if (part === undefined) part = 'content';
-
-      var tab = this.get('tabs')[index];
-
-      if (!tab) return 'missing';
-
-      var key = part + '-' + tab.id;
-      if (key in this.partials) return key;
-
-      this.partials[key] = tab[part] || 'Tab ' + index;
-
-      return key;
-    },
+  data() {
+    return {
+      tab, fillWidth: false
+    };
   },
 
   partials: { 'missing': '' },
